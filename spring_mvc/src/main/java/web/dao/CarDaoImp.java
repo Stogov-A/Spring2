@@ -1,6 +1,6 @@
-package hiber.dao;
+package web.dao;
 
-import hiber.model.Car;
+import web.model.Car;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

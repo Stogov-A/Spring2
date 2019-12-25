@@ -1,11 +1,8 @@
 package hiber;
 
 import hiber.config.AppConfig;
-import hiber.dao.UserDao;
-import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.SQLException;
@@ -22,7 +19,7 @@ public class MainApp {
 //        userService.add(new User("User3", "Lastname3", "user3@mail.ru", new Car("user3Car", 3)));
 //        userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
 
-        User userByCar = userService.getCarById("user1Car", 1);
+        User userByCar = userService.getUserByCarNameAndCarSeries("user1Car", 1);
         System.out.println(userByCar.getFirstName() + "  " + userByCar.getLastName() + "  " + userByCar.getEmail() + "  " +
                 userByCar.getCar().getName());
         List<User> users = userService.listUsers();

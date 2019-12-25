@@ -12,7 +12,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("web")
+@ComponentScan(value = "web")
 public class WebConfig implements WebMvcConfigurer {
 
     @Override

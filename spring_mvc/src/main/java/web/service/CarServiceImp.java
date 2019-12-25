@@ -1,7 +1,7 @@
-package hiber.service;
+package web.service;
 
-import hiber.dao.CarDaoImp;
-import hiber.model.Car;
+import web.dao.CarDaoImp;
+import web.model.Car;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
