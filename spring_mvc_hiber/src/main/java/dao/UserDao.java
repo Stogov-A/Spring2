@@ -9,9 +9,11 @@ public interface UserDao {
 
     void addUser(User user);
 
-    void removeUser(User user);
+    void deleteUserById(long id);
 
     User getUserById(long id);
 
     void editUser(long id, String name, String lastName, int age, String email, String password);
+
+    boolean checkPasswordById(String password, long id);
 }

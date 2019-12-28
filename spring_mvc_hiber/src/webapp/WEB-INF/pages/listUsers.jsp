@@ -12,6 +12,10 @@
     <title>Title</title>
 </head>
 <body>
+<form method="get" action=/addUser style="display:inline;">
+    <input type="submit" value="Add new user">
+    <br><br>
+</form>
 <table border="5">
     <tr>
         <th>ID</th>
@@ -19,6 +23,8 @@
         <th>Last Name</th>
         <th>Age</th>
         <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     <c:forEach var="user" items="${users}">
         <tr>
@@ -27,6 +33,8 @@
             <td>${user.lastName}</td>
             <td>${user.age}</td>
             <td>${user.email}</td>
+            <td><a href=/edit?id=${user.id}>Edit</a></td>
+            <td><a href="/delete?id=${user.id}">Delete</a></td>
         </tr>
     </c:forEach>
 </table>
