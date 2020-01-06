@@ -1,5 +1,6 @@
 package dao;
 
+import model.Role;
 import model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserDaoImp implements UserDao {
@@ -46,14 +48,15 @@ public class UserDaoImp implements UserDao {
     }
 
     @Override
-    public void editUser(long id, String name, String lastName, int age, String email, String password) {
+    public void editUser(long id, String name, String lastName, int age, String email, String password, Set<Role>roles) {
         Query query = sessionFactory.getCurrentSession().createQuery("UPDATE User SET name = :name, " +
-                "lastName = :lastName, age = :age, email = :email, password = :password WHERE id = :id");
+                "lastName = :lastName, age = :age, email = :email, password = :password, roles = :roles WHERE id = :id");
         query.setParameter("name", name);
         query.setParameter("lastName", lastName);
         query.setParameter("age", age);
         query.setParameter("email", email);
         query.setParameter("password", password);
+        query.setParameter("roles", roles);
         query.setParameter("id", id);
         query.executeUpdate();
     }
@@ -69,5 +72,16 @@ public class UserDaoImp implements UserDao {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User getUserByName(String username) {
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM User WHERE name = :name");
+        query.setParameter("name", username);
+        List<User>users = query.getResultList();
+        if (users.size() > 0){
+            return users.get(0);
+        }
+        return null;
     }
 }

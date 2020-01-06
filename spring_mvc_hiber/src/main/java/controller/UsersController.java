@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,7 +41,7 @@ public class UsersController {
             modelMap.addAttribute("id", id);
             return "editUser";
         } else {
-            userService.editUser(id, name, lastName, age, email, password);
+            userService.editUser(id, name, lastName, age, email, password, null);
             List<User> users = userService.getAllUsers();
             modelMap.addAttribute("users", users);
             return "listUsers";
@@ -87,5 +88,20 @@ public class UsersController {
             modelMap.addAttribute("users", users);
             return "listUsers";
         }
+    }
+
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String loginPage(ModelMap modelMap) {
+        return "login";
+    }
+
+    @RequestMapping(value = "hello", method = RequestMethod.GET)
+    public String printWelcome(ModelMap model) {
+        List<String> messages = new ArrayList<>();
+        messages.add("Hello!");
+        messages.add("I'm Spring MVC-SECURITY application");
+        messages.add("5.2.0 version by sep'19 ");
+        model.addAttribute("messages", messages);
+        return "hello";
     }
 }

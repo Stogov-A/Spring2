@@ -1,5 +1,6 @@
 package config;
 
+import model.Role;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +49,7 @@ public class AppConfig {
         props.put("hibernate.connection.password", env.getProperty("hibernate.connection.password"));
         props.put("hibernate.jdbc.time_zone", env.getProperty("hibernate.jdbc.time_zone"));
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(User.class);
+        factoryBean.setAnnotatedClasses(User.class, Role.class);
         return factoryBean;
     }
 

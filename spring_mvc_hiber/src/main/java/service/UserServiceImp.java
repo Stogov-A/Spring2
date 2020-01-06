@@ -1,16 +1,18 @@
 package service;
 
 import dao.UserDao;
+import model.Role;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Transactional
 @Service
-public class UserServiceImp implements UserService {
+public class UserServiceImp implements  UserService {
     @Autowired
     UserDao userDao;
 
@@ -30,8 +32,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void editUser(long id, String name, String lastName, int age, String email, String password) {
-        userDao.editUser(id, name, lastName, age, email, lastName);
+    public void editUser(long id, String name, String lastName, int age, String email, String password, Set<Role>roles) {
+        userDao.editUser(id, name, lastName, age, email, lastName, roles);
     }
 
     @Override
@@ -44,5 +46,8 @@ public class UserServiceImp implements UserService {
         userDao.deleteUserById(id);
     }
 
-
+    @Override
+    public User getUserByName(String name) {
+        return userDao.getUserByName(name);
+    }
 }
