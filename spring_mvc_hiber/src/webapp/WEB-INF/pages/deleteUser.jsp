@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: NoName
@@ -24,10 +25,16 @@
 
     <label>Email</label>
     ${user.email}<br><br>
-
+    <label>Roles:</label>
+    <c:forEach var="role" items="${user.roles}">
+        <tr>
+            <td>${role.name}</td>
+        </tr>
+    </c:forEach><br><br>
     <label>Enter password for delete user</label>
     <input name="password" type="password"><br>
     <input type="submit" value="Delete"/><br>
+    <a href="<c:url value="/logout" />">Logout</a>
 </form>
 </body>
 </html>

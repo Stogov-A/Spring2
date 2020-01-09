@@ -38,27 +38,36 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User getUserById(long id) {
-        Query query = sessionFactory.getCurrentSession().createQuery("FROM User WHERE id = :id" );
+        Query query = sessionFactory.getCurrentSession().createQuery("FROM User WHERE id = :id");
         query.setParameter("id", id);
-        List<User>list = query.getResultList();
-        if(list.size() > 0){
+        List<User> list = query.getResultList();
+        if (list.size() > 0) {
             return list.get(0);
         }
         return null;
     }
 
     @Override
-    public void editUser(long id, String name, String lastName, int age, String email, String password, Set<Role>roles) {
-        Query query = sessionFactory.getCurrentSession().createQuery("UPDATE User SET name = :name, " +
-                "lastName = :lastName, age = :age, email = :email, password = :password, roles = :roles WHERE id = :id");
-        query.setParameter("name", name);
-        query.setParameter("lastName", lastName);
-        query.setParameter("age", age);
-        query.setParameter("email", email);
-        query.setParameter("password", password);
-        query.setParameter("roles", roles);
-        query.setParameter("id", id);
-        query.executeUpdate();
+    public void editUser(long id, String name, String lastName, int age, String email, String password, Set<Role> roles) {
+        User user = getUserById(id);
+        user.setName(name);
+        user.setLastName(lastName);
+        user.setAge(age);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRoles(roles);
+        sessionFactory.getCurrentSession().update(user);
+        //        Query query = sessionFactory.getCurrentSession().createQuery("UPDATE User SET name = :name, " +
+//                "lastName = :lastName, age = :age, email = :email, password = :password, " +
+//                "roles = :roles WHERE id = :id");
+//        query.setParameter("name", name);
+//        query.setParameter("lastName", lastName);
+//        query.setParameter("age", age);
+//        query.setParameter("email", email);
+//        query.setParameter("password", password);
+//        query.setParameter("roles", roles);
+//        query.setParameter("id", id);
+//        query.executeUpdate();
     }
 
     @Override
@@ -67,8 +76,8 @@ public class UserDaoImp implements UserDao {
                 "AND password = :password");
         query.setParameter("password", password);
         query.setParameter("id", id);
-        List<User>users = query.getResultList();
-        if (users.size() > 0){
+        List<User> users = query.getResultList();
+        if (users.size() > 0) {
             return true;
         }
         return false;
@@ -78,8 +87,8 @@ public class UserDaoImp implements UserDao {
     public User getUserByName(String username) {
         Query query = sessionFactory.getCurrentSession().createQuery("FROM User WHERE name = :name");
         query.setParameter("name", username);
-        List<User>users = query.getResultList();
-        if (users.size() > 0){
+        List<User> users = query.getResultList();
+        if (users.size() > 0) {
             return users.get(0);
         }
         return null;

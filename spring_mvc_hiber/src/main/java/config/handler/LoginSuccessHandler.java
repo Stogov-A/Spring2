@@ -23,14 +23,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         boolean isUser = false;
         for (GrantedAuthority authority : authorities) {
-            if (authority.getAuthority().equals("ROLE_ADMIN")){
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 httpServletResponse.sendRedirect("/users");
                 return;
-            }else if (authority.getAuthority().equals("ROLE_USER")){
+            } else if (authority.getAuthority().equals("ROLE_USER")) {
                 isUser = true;
             }
         }
-        if (isUser){
+        if (isUser) {
             httpServletResponse.sendRedirect("/hello");
         }
     }

@@ -1,7 +1,9 @@
 package controller;
 
+import model.Role;
 import model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import service.UserService;
 
+import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/")
@@ -36,12 +41,17 @@ public class UsersController {
     @RequestMapping(value = "edit", method = RequestMethod.POST)
     public String printEditUserPost(ModelMap modelMap, @RequestParam long id, @RequestParam String name,
                                     @RequestParam String lastName, @RequestParam int age, @RequestParam String email,
-                                    @RequestParam String password) {
-        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            modelMap.addAttribute("id", id);
+                                    @RequestParam String password, @RequestParam(required = false) String[] userRoles) {
+        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || userRoles == null) {
+            modelMap.addAttribute("user", userService.getUserById(id));
+            modelMap.addAttribute("message", "Wrong argument");
             return "editUser";
         } else {
-            userService.editUser(id, name, lastName, age, email, password, null);
+            Set<Role> roles = new HashSet<>();
+            for (String s : userRoles) {
+                roles.add(new Role(s));
+            }
+            userService.editUser(id, name, lastName, age, email, password, roles);
             List<User> users = userService.getAllUsers();
             modelMap.addAttribute("users", users);
             return "listUsers";
@@ -76,14 +86,22 @@ public class UsersController {
     }
 
     @RequestMapping(value = "addUser", method = RequestMethod.POST)
-    public String printAddUserPost(ModelMap modelMap, @RequestParam String name,
-                                   @RequestParam String lastName, @RequestParam int age, @RequestParam String email,
-                                   @RequestParam String password) {
-        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+    public String printAddUserPost(ModelMap modelMap,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) String lastName,
+                                   @RequestParam int age,
+                                   @RequestParam(required = false) String email,
+                                   @RequestParam(required = false) String password,
+                                   @RequestParam(required = false) String[] userRoles) {
+        if (name.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || userRoles == null) {
             modelMap.addAttribute("message", "Wrong argument");
             return "addUser";
         } else {
-            userService.addUser(new User(name, lastName, age, email, password));
+            Set<Role> roles = new HashSet<>();
+            for (String s : userRoles) {
+                roles.add(new Role(s));
+            }
+            userService.addUser(new User(name, lastName, age, email, password, roles));
             List<User> users = userService.getAllUsers();
             modelMap.addAttribute("users", users);
             return "listUsers";
@@ -96,11 +114,21 @@ public class UsersController {
     }
 
     @RequestMapping(value = "hello", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model) {
+    public String printWelcome(ModelMap model, Principal principal) {
+        User user = (User) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
         List<String> messages = new ArrayList<>();
         messages.add("Hello!");
-        messages.add("I'm Spring MVC-SECURITY application");
-        messages.add("5.2.0 version by sep'19 ");
+        messages.add(user.getName());
+        messages.add(user.getLastName());
+        messages.add(String.valueOf(user.getAge()));
+        messages.add(user.getEmail());
+        messages.add(user.getPassword());
+        for (Role role : user.getRoles()) {
+            messages.add(role.getName());
+        }
         model.addAttribute("messages", messages);
         return "hello";
     }
