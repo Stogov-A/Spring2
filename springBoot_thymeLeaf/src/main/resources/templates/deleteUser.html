@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/deleteUser}" th:object="${user}" method="post">
+        <input type="number" hidden name="id"  th:value = "*{id}">
+        <input type="text" hidden name="name"  th:value = "*{name}">
+        <input type="text" hidden name="lastName"  th:value = "*{lastName}">
+        <input type="number" hidden name="age"  th:value = "*{age}">
+        <input type="text" hidden name="email"  th:value = "*{email}">
+        <input type="text" hidden name="password"  th:value = "*{password}">
+        <input type="text" hidden name="roles"  th:value = "*{roles}">
+        <label>Delete this user?</label><br><br>
+        <label>Name:  </label>
+        <output th:utext=*{name}></output><br><br>
+        <label>LastName:  </label>
+        <output th:utext=*{lastName}></output><br><br>
+        <label>Age:  </label>
+        <output th:utext=*{age}></output><br><br>
+        <label>Email:  </label>
+        <output th:utext=*{email}></output><br><br>
+        <label>Roles:  </label>
+        <output th:utext=*{roles}></output><br><br>
+        <label>Enter password</label>
+        <input type="password" name="enterPass"/>
+        <br><br>
+        <input type="submit" value="Delete"/>
+    </form>
+    <br>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out"/>
+    </form>
+</body>
+</html>

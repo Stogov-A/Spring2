@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<body>
+<h1>Welcome</h1>
+<label>Hello!!!</label><br><br>
+<label>Name: </label>
+<output th:utext=*{user.name}></output>
+<br><br>
+<label>LastName: </label>
+<output th:utext=*{user.lastName}></output>
+<br><br>
+<label>Age: </label>
+<output th:utext=*{user.age}></output>
+<br><br>
+<label>Email: </label>
+<output th:utext=*{user.email}></output>
+<br><br>
+<label>Roles: </label>
+<output th:utext=*{user.roles}></output>
+<br><br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>
