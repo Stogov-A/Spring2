@@ -114,7 +114,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "hello", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model, Principal principal) {
+    public String printWelcome(ModelMap model) {
         User user = (User) SecurityContextHolder
                 .getContext()
                 .getAuthentication()

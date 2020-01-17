@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.javamentor.springBoot_thymeLeaf.model.Role;
 import ru.javamentor.springBoot_thymeLeaf.model.User;
 import ru.javamentor.springBoot_thymeLeaf.repository.UserRepository;
-//import ru.javamentor.springBoot_thymeLeaf.service.UserService;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
