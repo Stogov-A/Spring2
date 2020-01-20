@@ -22,7 +22,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         boolean isUser = false;
         for (GrantedAuthority authority : authorities) {
             if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                httpServletResponse.sendRedirect("/hello");
+                httpServletResponse.sendRedirect("/admin");
                 return;
             } else if (authority.getAuthority().equals("ROLE_USER")) {
                 isUser = true;
