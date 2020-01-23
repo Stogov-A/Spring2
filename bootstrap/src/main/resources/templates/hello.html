@@ -15,7 +15,7 @@
 <body>
 <nav class="navbar navbar-light bg-dark">
     <a class="navbar-brand text-white">Navbar</a>
-    <form class="form-inline">
+    <form class="form-inline" th:action="@{/logout}">
         <button class="btn text-white my-2 my-sm-0" type="submit">Loq out</button>
     </form>
 </nav>
@@ -32,8 +32,8 @@
             </div>
                     <div class="tab-pane fade show active" id="list-profile" role="tabpanel"
                          aria-labelledby="list-profile-list">HELLO!
-                        <td th:utext="${loginUser.name}"></td>
-                        <td th:utext="${loginUser.lastName}"></td>
+                        <td th:utext="${user.name}"></td>
+                        <td th:utext="${user.lastName}"></td>
                     </div>
                 </div>
             </div>

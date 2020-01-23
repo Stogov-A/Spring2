@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.javamentor.bootstrap.config.handler.LoginSuccessHandler;
+import ru.javamentor.bootstrap.dao.RoleDao;
+import ru.javamentor.bootstrap.dao.UserDao;
+import ru.javamentor.bootstrap.model.User;
 import ru.javamentor.bootstrap.service.UserDetailsServiceImpl;
 
 @Configuration
@@ -17,6 +20,10 @@ import ru.javamentor.bootstrap.service.UserDetailsServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    RoleDao roleDao;
+    @Autowired
+    UserDao userDao;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -25,6 +32,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+        if (roleDao.getAllRoles().size() < 2) {
+            roleDao.addAdminRole();
+            roleDao.addUserRole();
+        }
+        if (userDao.findAllUsers().size() == 0) {
+            userDao.saveUser(new User("a", "a", 10, "a", "a", roleDao.getAllRoles()));
+        }
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin").hasAnyRole("ADMIN")
