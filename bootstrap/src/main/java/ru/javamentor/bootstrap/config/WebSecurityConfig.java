@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             roleDao.addUserRole();
         }
         if (userDao.findAllUsers().size() == 0) {
-            userDao.saveUser(new User("a", "a", 10, "a", "a", roleDao.getAllRoles()));
+            userDao.addUser(new User("a", "a", 10, "a", "a", roleDao.getAllRoles()));
         }
         http.csrf().disable()
                 .authorizeRequests()

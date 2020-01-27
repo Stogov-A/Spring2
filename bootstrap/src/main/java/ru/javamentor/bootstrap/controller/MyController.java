@@ -12,7 +12,6 @@ import ru.javamentor.bootstrap.dao.RoleDao;
 import ru.javamentor.bootstrap.dao.UserDao;
 import ru.javamentor.bootstrap.model.Role;
 import ru.javamentor.bootstrap.model.User;
-import ru.javamentor.bootstrap.repository.UserRepository;
 
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +73,7 @@ public class MyController {
             user.setEmail(email);
             user.setPassword(password);
             user.setRoles(roles);
-            userDao.saveUser(user);
+            userDao.editUser(user);
         }
 
         return "redirect:/admin";
@@ -96,7 +95,7 @@ public class MyController {
             if (!isAdmin.isEmpty()) {
                 roles = roleDao.getAllRoles();
             }
-           userDao.saveUser(new User(name, lastName, age, email, password, roles));
+           userDao.addUser(new User(name, lastName, age, email, password, roles));
         }
         return "redirect:/admin";
     }
