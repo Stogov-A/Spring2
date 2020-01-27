@@ -20,10 +20,6 @@ import ru.javamentor.bootstrap.service.UserDetailsServiceImpl;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    RoleDao roleDao;
-    @Autowired
-    UserDao userDao;
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -32,14 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        if (roleDao.getAllRoles().size() < 2) {
-            roleDao.addAdminRole();
-            roleDao.addUserRole();
-        }
-        if (userDao.findAllUsers().size() == 0) {
-            userDao.addUser(new User("a", "a", 10, "a", "a", roleDao.getAllRoles()));
-        }
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin").hasAnyRole("ADMIN")
@@ -54,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
