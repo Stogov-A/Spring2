@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.javamentor.bootstrap.dao.RoleDao;
-import ru.javamentor.bootstrap.dao.UserDao;
 import ru.javamentor.bootstrap.model.Role;
 import ru.javamentor.bootstrap.model.User;
+import ru.javamentor.bootstrap.service.RoleServiceImpl;
+import ru.javamentor.bootstrap.service.UserDetailsServiceImpl;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,10 +22,10 @@ import java.util.Set;
 public class MyController {
 
     @Autowired
-    UserDao userDao;
+    UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    RoleDao roleDao;
+    RoleServiceImpl roleService;
 
     @GetMapping(value = "/hello")
     public String usersGet(Model model) {
@@ -43,7 +43,7 @@ public class MyController {
                 isAdmin = true;
             }
         }
-        List<User> users = userDao.findAllUsers();
+        List<User> users = userDetailsService.findAllUsers();
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("users", users);
         model.addAttribute("loginUser", user);
@@ -59,13 +59,13 @@ public class MyController {
                 || (isUser.isEmpty() && isAdmin.isEmpty())) {
             return "redirect:/admin";
         } else {
-            User user = userDao.findUserByID(id);
+            User user = userDetailsService.findUserByID(id);
             Set<Role> roles = new HashSet<>();
             if (!isUser.isEmpty()) {
-                roles = roleDao.getUserRole();
+                roles = roleService.getUserRole();
             }
             if (!isAdmin.isEmpty()) {
-                roles = roleDao.getAllRoles();
+                roles = roleService.getAllRoles();
             }
             user.setName(name);
             user.setLastName(lastName);
@@ -73,7 +73,7 @@ public class MyController {
             user.setEmail(email);
             user.setPassword(password);
             user.setRoles(roles);
-            userDao.editUser(user);
+            userDetailsService.editUser(user);
         }
 
         return "redirect:/admin";
@@ -90,19 +90,19 @@ public class MyController {
         } else {
             Set<Role> roles = new HashSet<>();
             if (!isUser.isEmpty()) {
-                roles = roleDao.getUserRole();
+                roles = roleService.getUserRole();
             }
             if (!isAdmin.isEmpty()) {
-                roles = roleDao.getAllRoles();
+                roles = roleService.getAllRoles();
             }
-           userDao.addUser(new User(name, lastName, age, email, password, roles));
+            userDetailsService.addUser(new User(name, lastName, age, email, password, roles));
         }
         return "redirect:/admin";
     }
 
     @PostMapping(value = "/delete")
     public String deletePost(Model model, @ModelAttribute("id") int id) {
-        userDao.deleteUser(userDao.findUserByID(id));
+        userDetailsService.deleteUser(userDetailsService.findUserByID(id));
         return "redirect:/admin";
     }
 }

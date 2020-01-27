@@ -1,16 +1,15 @@
 package ru.javamentor.bootstrap.dao;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.bootstrap.model.Role;
 
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+@Transactional
 @Repository
 public class RoleDaoImpl implements RoleDao {
     @Autowired
@@ -42,12 +41,10 @@ public class RoleDaoImpl implements RoleDao {
     @Override
     public void addUserRole() {
         entityManager.persist(new Role("ROLE_USER"));
-        entityManager.flush();
     }
 
     @Override
     public void addAdminRole() {
-        entityManager.persist(new Role("ADMIN"));
-        entityManager.flush();
+        entityManager.persist(new Role("ROLE_ADMIN"));
     }
 }
