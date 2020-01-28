@@ -38,13 +38,18 @@ public class MyController {
     public String adminGet(Model model) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isAdmin = false;
+        boolean isUser = false;
         for (Role role : user.getRoles()) {
             if (role.getName().equals("ROLE_ADMIN")) {
                 isAdmin = true;
             }
+            if (role.getName().equals("ROLE_USER")){
+                isUser = true;
+            }
         }
         List<User> users = userDetailsService.findAllUsers();
         model.addAttribute("isAdmin", isAdmin);
+        model.addAttribute("isUser", isUser);
         model.addAttribute("users", users);
         model.addAttribute("loginUser", user);
         return "admin";
