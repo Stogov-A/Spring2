@@ -117,16 +117,13 @@
                                                                     <input type="password" class="form-control"
                                                                            name="password" th:value=${user.password}>
                                                                     <br><br>
-                                                                    Is User:
-                                                                    <input
-                                                                            type="checkbox" name="isUser"
-                                                                            th:checked="${user.isUser}"/>
-                                                                    <br><br>
-                                                                    Is Admin:
-                                                                    <input
-                                                                            type="checkbox" name="isAdmin"
-                                                                            th:checked="${user.isAdmin}"/>
-                                                                    <br><br>
+                                                                    <div th:each="role : ${roles}" >
+                                                                        <label th:utext=${role.name}></label>
+                                                                        <input type="checkbox" th:name=${role.name}
+                                                                               th:checked=${user.hasRole(role.name)}/>
+                                                                        <br><br>
+                                                                    </div>
+
                                                                 </div>
 
                                                                 <div class="modal-footer">

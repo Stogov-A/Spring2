@@ -48,6 +48,8 @@ public class MyController {
             }
         }
         List<User> users = userDetailsService.findAllUsers();
+        Set<Role>roles = roleService.getAllRoles();
+        model.addAttribute("roles", roles);
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("isUser", isUser);
         model.addAttribute("users", users);
@@ -59,11 +61,21 @@ public class MyController {
     public String editPost(Model model, @ModelAttribute("id") int id, @ModelAttribute("name") String name,
                            @ModelAttribute("lastName") String lastName, @ModelAttribute("age") int age,
                            @ModelAttribute("email") String email, @ModelAttribute("password") String password,
-                           @ModelAttribute("isUser") String isUser, @ModelAttribute("isAdmin") String isAdmin) {
+                           @ModelAttribute("ROLE_USER") String isUser, @ModelAttribute("ROLE_ADMIN") String isAdmin) {
         if (name.isEmpty() || lastName.isEmpty() || age < 0 || email.isEmpty() || password.isEmpty()
                 || (isUser.isEmpty() && isAdmin.isEmpty())) {
+            for (Role allRole : roleService.getAllRoles()) {
+                System.out.println(allRole.getName());
+            }
+            System.out.println(isAdmin+"@@@@@@@@@@@@@@@@@@@@@");
+            System.out.println(isUser+"@@@@@@@@@@@@@@@@@@@@@");
             return "redirect:/admin";
         } else {
+            for (Role allRole : roleService.getAllRoles()) {
+                System.out.println(allRole.getName());
+            }
+            System.out.println(isAdmin+"!!!!!!!!!!!!!!!");
+            System.out.println(isUser+"!!!!!!!!!!!!!!");
             User user = userDetailsService.findUserByID(id);
             Set<Role> roles = new HashSet<>();
             if (!isUser.isEmpty()) {

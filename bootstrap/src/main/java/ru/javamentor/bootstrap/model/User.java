@@ -36,11 +36,6 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id")
     private Set<Role> roles = new HashSet<>();
 
-    @Transient
-    boolean isAdmin;
-
-    @Transient
-    boolean isUser;
 
     public User() {
     }
@@ -58,18 +53,9 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public boolean getIsAdmin() {
-        for (Role role : roles) {
-            if (role.getName().equals("ROLE_ADMIN")){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean getIsUser() {
-        for (Role role : roles) {
-            if (role.getName().equals("ROLE_USER")){
+    public boolean hasRole(String role){
+        for (Role userRole : roles) {
+            if (userRole.getName().equals(role)){
                 return true;
             }
         }
