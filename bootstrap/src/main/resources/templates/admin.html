@@ -117,6 +117,7 @@
                                                                     <input type="password" class="form-control"
                                                                            name="password" th:value=${user.password}>
                                                                     <br><br>
+
                                                                     <div th:each="role : ${roles}" >
                                                                         <label th:utext=${role.name}></label>
                                                                         <input type="checkbox" th:name=${role.name}
@@ -223,11 +224,14 @@
                                                 <label>Password:</label>
                                                 <input type="password" class="form-control" name="password">
                                                 <br>
-                                                <label>Is User:</label>
-                                                <input type="checkbox" name="isUser"/>
-                                                <br>
-                                                Is Admin:
-                                                <input type="checkbox" name="isAdmin"/>
+
+                                                <div th:each="role : ${roles}" >
+                                                    <label th:utext=${role.name}></label>
+                                                    <input type="checkbox" th:name=${role.name}
+                                                           th:checked=false
+                                                    />
+                                                    <br><br>
+                                                </div>
                                                 <br>
                                             </div>
                                             <button type="button" class="btn btn-primary"
