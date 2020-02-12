@@ -36,4 +36,14 @@ public class RoleServiceImpl implements RoleService {
     public void addAdminRole() {
         roleDao.addAdminRole();
     }
+
+    @Override
+    public Role getRoleByName(String name) {
+        return roleDao.getRoleByName(name);
+    }
+
+    @Override
+    public Set<Role> getSomeRolesByNames(Set<Role> roles) {
+        return roleDao.getSomeRolesBySet(roles);
+    }
 }

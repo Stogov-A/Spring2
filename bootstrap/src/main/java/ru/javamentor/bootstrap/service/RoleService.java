@@ -14,4 +14,8 @@ public interface RoleService {
     public void addUserRole();
 
     public void addAdminRole();
+
+    public Role getRoleByName(String name);
+
+    public Set<Role> getSomeRolesByNames(Set<Role>roles);
 }

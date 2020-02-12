@@ -1,13 +1,12 @@
 package ru.javamentor.bootstrap.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.javamentor.bootstrap.model.Role;
 import ru.javamentor.bootstrap.model.User;
 import ru.javamentor.bootstrap.service.RoleServiceImpl;
@@ -20,6 +19,9 @@ import java.util.Set;
 @Controller
 @RequestMapping(value = "/")
 public class MyController {
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -43,12 +45,12 @@ public class MyController {
             if (role.getName().equals("ROLE_ADMIN")) {
                 isAdmin = true;
             }
-            if (role.getName().equals("ROLE_USER")){
+            if (role.getName().equals("ROLE_USER")) {
                 isUser = true;
             }
         }
         List<User> users = userDetailsService.findAllUsers();
-        Set<Role>roles = roleService.getAllRoles();
+        Set<Role> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles);
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("isUser", isUser);
@@ -57,59 +59,52 @@ public class MyController {
         return "admin";
     }
 
-    @PostMapping(value = "/edit")
-    public String editPost(Model model, @ModelAttribute("id") int id, @ModelAttribute("name") String name,
-                           @ModelAttribute("lastName") String lastName, @ModelAttribute("age") int age,
-                           @ModelAttribute("email") String email, @ModelAttribute("password") String password,
-                           @ModelAttribute("ROLE_USER") String isUser, @ModelAttribute("ROLE_ADMIN") String isAdmin) {
-        if (name.isEmpty() || lastName.isEmpty() || age < 0 || email.isEmpty() || password.isEmpty()
-                || (isUser.isEmpty() && isAdmin.isEmpty())) {
-            return "redirect:/admin";
-        } else {
-            User user = userDetailsService.findUserByID(id);
-            Set<Role> roles = new HashSet<>();
-            if (!isUser.isEmpty()) {
-                roles = roleService.getUserRole();
-            }
-            if (!isAdmin.isEmpty()) {
-                roles = roleService.getAllRoles();
-            }
-            user.setName(name);
-            user.setLastName(lastName);
-            user.setAge(age);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRoles(roles);
-            userDetailsService.editUser(user);
-        }
-
-        return "redirect:/admin";
+    @GetMapping(value = "/table")
+    public @ResponseBody
+    List<User> getUsers() {
+        return userDetailsService.findAllUsers();
     }
 
-    @PostMapping(value = "/add")
-    public String addPost(Model model, @ModelAttribute("name") String name,
-                          @ModelAttribute("lastName") String lastName, @ModelAttribute("age") int age,
-                          @ModelAttribute("email") String email, @ModelAttribute("password") String password,
-                          @ModelAttribute("ROLE_USER") String isUser, @ModelAttribute("ROLE_ADMIN") String isAdmin) {
-        if (name.isEmpty() || lastName.isEmpty() || age < 0 || email.isEmpty() || password.isEmpty()
-                || (isUser.isEmpty() && isAdmin.isEmpty())) {
-            return "redirect:/admin";
-        } else {
-            Set<Role> roles = new HashSet<>();
-            if (!isUser.isEmpty()) {
-                roles = roleService.getUserRole();
-            }
-            if (!isAdmin.isEmpty()) {
-                roles = roleService.getAllRoles();
-            }
-            userDetailsService.addUser(new User(name, lastName, age, email, password, roles));
-        }
-        return "redirect:/admin";
+    @GetMapping(value = "/getUser/{id}")
+    public @ResponseBody
+    String getUser(@PathVariable long id) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(userDetailsService.findUserByID(id));
     }
 
-    @PostMapping(value = "/delete")
-    public String deletePost(Model model, @ModelAttribute("id") int id) {
-        userDetailsService.deleteUser(userDetailsService.findUserByID(id));
-        return "redirect:/admin";
+    @GetMapping(value = "/getAllRoles")
+    public @ResponseBody
+    Set<Role> getAllRoles() {
+        return roleService.getAllRoles();
+    }
+
+    @DeleteMapping(value = "/deleteUser/{id}")
+    @ResponseBody
+    public String delete(@PathVariable long id) throws JsonProcessingException {
+        userDetailsService.deleteUserById(id);
+        return objectMapper.writeValueAsString("User delete");
+    }
+
+    @PutMapping(value = "/addUser")
+    @ResponseBody
+    public String addUser(@RequestBody User user) throws JsonProcessingException {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
+                || user.getPassword().isEmpty() || user.getRoles().size() == 0){
+            return objectMapper.writeValueAsString("User not added! Invalid Arguments");
+        }
+        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
+        userDetailsService.addUser(user);
+        return objectMapper.writeValueAsString("User successfully added");
+    }
+
+    @PostMapping(value = "/sendEditForm")
+    public @ResponseBody
+    String str(@RequestBody User user) throws JsonProcessingException {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
+        || user.getPassword().isEmpty() || user.getRoles().size() == 0){
+            return objectMapper.writeValueAsString("Invalid argument");
+        }
+        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
+        userDetailsService.editUser(user);
+        return objectMapper.writeValueAsString("");
     }
 }

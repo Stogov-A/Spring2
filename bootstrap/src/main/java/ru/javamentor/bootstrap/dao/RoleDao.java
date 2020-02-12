@@ -10,4 +10,6 @@ public interface RoleDao {
     Set<Role>getAdminRole();
     void addUserRole();
     void addAdminRole();
+    Role getRoleByName(String name);
+    Set<Role> getSomeRolesBySet(Set<Role>roles);
 }
