@@ -12,16 +12,12 @@ import ru.javamentor.bootstrap.model.User;
 import ru.javamentor.bootstrap.service.RoleServiceImpl;
 import ru.javamentor.bootstrap.service.UserDetailsServiceImpl;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/")
 public class MyController {
-
-    @Autowired
-    ObjectMapper objectMapper;
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -59,52 +55,5 @@ public class MyController {
         return "admin";
     }
 
-    @GetMapping(value = "/table")
-    public @ResponseBody
-    List<User> getUsers() {
-        return userDetailsService.findAllUsers();
-    }
 
-    @GetMapping(value = "/getUser/{id}")
-    public @ResponseBody
-    String getUser(@PathVariable long id) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(userDetailsService.findUserByID(id));
-    }
-
-    @GetMapping(value = "/getAllRoles")
-    public @ResponseBody
-    Set<Role> getAllRoles() {
-        return roleService.getAllRoles();
-    }
-
-    @DeleteMapping(value = "/deleteUser/{id}")
-    @ResponseBody
-    public String delete(@PathVariable long id) throws JsonProcessingException {
-        userDetailsService.deleteUserById(id);
-        return objectMapper.writeValueAsString("User delete");
-    }
-
-    @PutMapping(value = "/addUser")
-    @ResponseBody
-    public String addUser(@RequestBody User user) throws JsonProcessingException {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-                || user.getPassword().isEmpty() || user.getRoles().size() == 0){
-            return objectMapper.writeValueAsString("User not added! Invalid Arguments");
-        }
-        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
-        userDetailsService.addUser(user);
-        return objectMapper.writeValueAsString("User successfully added");
-    }
-
-    @PostMapping(value = "/sendEditForm")
-    public @ResponseBody
-    String str(@RequestBody User user) throws JsonProcessingException {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-        || user.getPassword().isEmpty() || user.getRoles().size() == 0){
-            return objectMapper.writeValueAsString("Invalid argument");
-        }
-        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
-        userDetailsService.editUser(user);
-        return objectMapper.writeValueAsString("");
-    }
 }
