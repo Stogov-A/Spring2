@@ -54,8 +54,8 @@
                          aria-labelledby="list-home-list">
                         <div class="tab-content" id="tabContent">
                             <ul class="nav nav-tabs" id="someTabs">
-                                <li class="nav-item" >
-                                    <a class="nav-link"id="table" data-toggle="tab" href="#home">Table </a>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="table" data-toggle="tab" href="#home">Table </a>
                                 </li>
                                 <li class="nav-item" id="nus">
                                     <a class="nav-link" data-toggle="tab" href="#addUser">New User</a>
@@ -93,24 +93,27 @@
                                                 <input id="addName" type="text" class="form-control" name="name">
                                                 <br>
                                                 <label>LastName:</label>
-                                                <input id="addLastName" type="text" class="form-control" name="lastName">
+                                                <input id="addLastName" type="text" class="form-control"
+                                                       name="lastName">
                                                 <br>
                                                 <label>Age:</label>
-                                                <input id="addAge"  type="number" class="form-control" name="age">
+                                                <input id="addAge" type="number" class="form-control" name="age">
                                                 <br>
                                                 <label>Email:</label>
                                                 <input id="addEmail" type="text" class="form-control" name="email">
                                                 <br>
                                                 <label>Password:</label>
-                                                <input id="addPassword" type="password" class="form-control" name="password">
+                                                <input id="addPassword" type="password" class="form-control"
+                                                       name="password">
                                                 <br>
 
                                                 <div id="addRole">
-                                                   <script src="/addRole.js"></script>
+                                                    <script src="/addRole.js"></script>
                                                 </div>
                                                 <br>
                                             </div>
-                                            <button type="button" onclick="addUser()" class="btn btn-primary">Add</button>
+                                            <button type="button" onclick="addUser()" class="btn btn-primary">Add
+                                            </button>
                                         </form>
                                     </div>
                                 </div>
@@ -120,8 +123,8 @@
 
                     <div class="tab-pane fade " id="list-profile" role="tabpanel"
                          aria-labelledby="list-profile-list">HELLO!
-                        <td th:utext="${loginUser.name}"></td>
-                        <td th:utext="${loginUser.lastName}"></td>
+<!--                        <td th:utext="${loginUser.name}"></td>-->
+<!--                        <td th:utext="${loginUser.lastName}"></td>-->
                     </div>
                 </div>
             </div>
@@ -139,20 +142,20 @@
                         &times;
                     </button>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                     <form>
                         <div class="form-group" id="editForm">
                             <input type="text" hidden name="id" id="editId">
                             <label>Name: </label><br>
-                            <input type="text"  name="name"class="form-control" id="editName"><br><br>
+                            <input type="text" name="name" class="form-control" id="editName"><br><br>
                             <label>LastName: </label><br>
-                            <input type="text"  name="lastName"class="form-control" id="editLastName"><br><br>
+                            <input type="text" name="lastName" class="form-control" id="editLastName"><br><br>
                             <label>Age: </label><br>
-                            <input type="number"  name="age"class="form-control" id="editAge"><br><br>
+                            <input type="number" name="age" class="form-control" id="editAge"><br><br>
                             <label>Email: </label><br>
-                            <input type="text"  name="email"class="form-control" id="editEmail"><br><br>
+                            <input type="text" name="email" class="form-control" id="editEmail"><br><br>
                             <label>Password: </label><br>
-                            <input type="text"  name="password"class="form-control" id="editPassword"><br><br>
+                            <input type="text" name="password" class="form-control" id="editPassword"><br><br>
                             <label>Roles: </label><br>
                             <div id="editRoles"></div>
                         </div>
@@ -176,18 +179,22 @@
                         &times;
                     </button>
                 </div>
-                <div class="modal-body" >
+                <div class="modal-body">
                     <form>
                         <div class="form-group" id="deleteForm">
                             <output type="text" hidden name="id" id="deleteId"></output>
                             <label>Name: </label><br>
-                            <output type="text"  name="name"class="form-control" id="deleteName"></output><br><br>
+                            <output type="text" name="name" class="form-control" id="deleteName"></output>
+                            <br><br>
                             <label>LastName: </label><br>
-                            <output type="text"  name="lastName"class="form-control" id="deleteLastName"></output><br><br>
+                            <output type="text" name="lastName" class="form-control" id="deleteLastName"></output>
+                            <br><br>
                             <label>Age: </label><br>
-                            <output type="number"  name="age"class="form-control" id="deleteAge"></output><br><br>
+                            <output type="number" name="age" class="form-control" id="deleteAge"></output>
+                            <br><br>
                             <label>Email: </label><br>
-                            <output type="text"  name="email"class="form-control" id="deleteEmail"></output><br><br>
+                            <output type="text" name="email" class="form-control" id="deleteEmail"></output>
+                            <br><br>
                             <label>Roles: </label><br>
                             <output id="deleteRoles"></output>
                         </div>
@@ -201,7 +208,9 @@
     </div>
 </div><!--/row-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"

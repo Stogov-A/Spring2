@@ -1,31 +1,27 @@
-package ru.javamentor.bootstrap.controller;
+package ru.javamentor.Client.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import ru.javamentor.bootstrap.model.Role;
-import ru.javamentor.bootstrap.model.User;
-import ru.javamentor.bootstrap.service.RoleServiceImpl;
-import ru.javamentor.bootstrap.service.UserDetailsServiceImpl;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import ru.javamentor.Client.model.Role;
+import ru.javamentor.Client.model.User;
+import ru.javamentor.Client.service.RestTemplateService;
 
 import java.util.List;
-import java.util.Set;
 
 @Controller
 @RequestMapping(value = "/")
 public class MyController {
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
-
-    @Autowired
-    RoleServiceImpl roleService;
+    RestTemplateService restTemplateService;
 
     @GetMapping(value = "/hello")
     public String usersGet(Model model) {
@@ -36,24 +32,26 @@ public class MyController {
 
     @GetMapping(value = "/admin")
     public String adminGet(Model model) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails details = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         boolean isAdmin = false;
         boolean isUser = false;
-        for (Role role : user.getRoles()) {
-            if (role.getName().equals("ROLE_ADMIN")) {
+        for (GrantedAuthority authority : details.getAuthorities()) {
+            if (authority.getAuthority().equals("ROLE_ADMIN")) {
                 isAdmin = true;
             }
-            if (role.getName().equals("ROLE_USER")) {
+            if (authority.getAuthority().equals("ROLE_USER")) {
                 isUser = true;
             }
         }
-        List<User> users = userDetailsService.findAllUsers();
-        Set<Role> roles = roleService.getAllRoles();
+
+        String users = restTemplateService.findAllUsers();
+        String roles = restTemplateService.findAllRoles();
+
         model.addAttribute("roles", roles);
         model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("isUser", isUser);
         model.addAttribute("users", users);
-        model.addAttribute("loginUser", user);
+        //model.addAttribute("loginUser", user);
         return "admin";
     }
 
