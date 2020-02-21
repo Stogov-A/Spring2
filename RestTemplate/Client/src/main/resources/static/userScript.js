@@ -95,6 +95,7 @@ function openEditForm(id) {
                     for (let i in data) {
                         let hasRole = "";
                         for (let r in datas.roles) {
+                            console.log(datas.roles[0]+"    "+datas.roles)
                             if (data[i].name == datas.roles[r].name) {
                                 hasRole = "checked";
                             }

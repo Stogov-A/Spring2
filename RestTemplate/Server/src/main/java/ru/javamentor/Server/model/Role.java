@@ -1,6 +1,7 @@
 package ru.javamentor.Server.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "roles")
-public class Role implements GrantedAuthority , Serializable {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
@@ -42,6 +43,7 @@ public class Role implements GrantedAuthority , Serializable {
     }
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return name;
     }

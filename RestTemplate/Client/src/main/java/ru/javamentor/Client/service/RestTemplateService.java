@@ -23,30 +23,16 @@ public class RestTemplateService {
     @Autowired
     RestTemplate restTemplate;
 
-    public String findAllUsers(){
-        try {
-            return objectMapper.writeValueAsString(restTemplate.getForObject("http://localhost:8080/admin", String.class));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String findAllUsers() {
+        return restTemplate.getForObject("http://localhost:8080/admin", String.class);
+
     }
 
-    public String findAllRoles(){
-        try {
+    public String findAllRoles() {
+        return restTemplate.getForObject("http://localhost:8080/getAllRoles", String.class);
+    }
 
-            String s = restTemplate.getForObject("http://localhost:8080/getAllRoles", String.class);
-            System.out.println(s);
-            ObjectMapper mapper = new ObjectMapper();
-            Set <Role> roles = mapper.reader()
-                    .forType(new TypeReference<Set<Role>>() {})
-                    .readValue(s);
-            System.out.println(roles+"ASADSSADASD");
-
-            return s;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String findUserById(long id) {
+        return restTemplate.getForObject("http://localhost:8080/getUser/"+ id, String.class);
     }
 }

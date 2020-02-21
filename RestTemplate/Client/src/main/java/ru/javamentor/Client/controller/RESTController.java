@@ -25,11 +25,13 @@ public class RESTController {
         return restTemplateService.findAllUsers();
     }
 
-//    @GetMapping(value = "/getUser/{id}")
-//    public String getUser(@PathVariable long id) throws JsonProcessingException {
-//        return objectMapper.writeValueAsString(userDetailsService.findUserByID(id));
-//    }
-//
+    @GetMapping(value = "/getUser/{id}")
+    public String getUser(@PathVariable long id) throws JsonProcessingException {
+       String s =  restTemplateService.findUserById(id);
+        System.out.println(s);
+        return s;
+    }
+
     @GetMapping(value = "/getAllRoles")
     public String getAllRoles() {
         return restTemplateService.findAllRoles();
