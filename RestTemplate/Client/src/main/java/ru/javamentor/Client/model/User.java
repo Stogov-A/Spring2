@@ -1,5 +1,6 @@
 package ru.javamentor.Client.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,9 +10,9 @@ import java.util.Set;
 
 public class User implements UserDetails {
 
-      private long id;
+    private long id;
 
-      private String name;
+    private String name;
 
     private String lastName;
 
@@ -21,7 +22,7 @@ public class User implements UserDetails {
 
     private String password;
 
-     private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
 
     public User() {
@@ -40,9 +41,9 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public boolean hasRole(String role){
+    public boolean hasRole(String role) {
         for (Role userRole : roles) {
-            if (userRole.getName().equals(role)){
+            if (userRole.getName().equals(role)) {
                 return true;
             }
         }
@@ -90,6 +91,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
     }

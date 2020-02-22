@@ -27,41 +27,37 @@ public class RESTController {
 
     @GetMapping(value = "/getUser/{id}")
     public String getUser(@PathVariable long id) throws JsonProcessingException {
-       String s =  restTemplateService.findUserById(id);
-        System.out.println(s);
-        return s;
+       return restTemplateService.findUserById(id);
     }
 
     @GetMapping(value = "/getAllRoles")
     public String getAllRoles() {
         return restTemplateService.findAllRoles();
     }
-//
-//    @DeleteMapping(value = "/deleteUser/{id}")
-//    public String delete(@PathVariable long id) throws JsonProcessingException {
-//        userDetailsService.deleteUserById(id);
-//        return objectMapper.writeValueAsString("User delete");
-//    }
-//
-//    @PutMapping(value = "/addUser")
-//    public String addUser(@RequestBody User user) throws JsonProcessingException {
-//        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-//                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
-//            return objectMapper.writeValueAsString("User not added! Invalid Arguments");
-//        }
-//        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
-//        userDetailsService.addUser(user);
-//        return objectMapper.writeValueAsString("User successfully added");
-//    }
-//
-//    @PostMapping(value = "/sendEditForm")
-//    public String str(@RequestBody User user) throws JsonProcessingException {
-//        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-//                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
-//            return objectMapper.writeValueAsString("Invalid argument");
-//        }
-//        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
-//        userDetailsService.editUser(user);
-//        return objectMapper.writeValueAsString("");
-//    }
+
+    @DeleteMapping(value = "/deleteUser/{id}")
+    public String delete(@PathVariable long id) throws JsonProcessingException {
+        restTemplateService.deleteUserById(id);
+        return objectMapper.writeValueAsString("User delete");
+    }
+
+    @PutMapping(value = "/addUser")
+    public String addUser(@RequestBody User user) throws JsonProcessingException {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
+                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
+            return objectMapper.writeValueAsString("User not added! Invalid Arguments");
+        }
+        restTemplateService.addUser(user);
+        return objectMapper.writeValueAsString("User successfully added");
+    }
+
+    @PostMapping(value = "/sendEditForm")
+    public String str(@RequestBody User user) throws JsonProcessingException {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
+                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
+            return objectMapper.writeValueAsString("Invalid argument");
+        }
+        restTemplateService.editUser(user);
+        return objectMapper.writeValueAsString("");
+    }
 }

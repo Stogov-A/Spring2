@@ -78,25 +78,25 @@ function openEditForm(id) {
         type: "GET",
         url: "/getUser/" + id,
         dataType: "json",
-        success: function (datas) {
+        success: function (user) {
             $("#editRoles").empty();
             $("#editButtons").empty();
-            $("#editId").val(datas.id);
-            $("#editName").val(datas.name);
-            $("#editLastName").val(datas.lastName);
-            $("#editAge").val(datas.age);
-            $("#editEmail").val(datas.email);
-            $("#editPassword").val(datas.password);
+            $("#editId").val(user.id);
+            $("#editName").val(user.name);
+            $("#editLastName").val(user.lastName);
+            $("#editAge").val(user.age);
+            $("#editEmail").val(user.email);
+            $("#editPassword").val(user.password);
 
             $.ajax({
                 type: "get",
+                dataType: "json",
                 url: "/getAllRoles",
                 success: function (data) {
                     for (let i in data) {
                         let hasRole = "";
-                        for (let r in datas.roles) {
-                            console.log(datas.roles[0]+"    "+datas.roles)
-                            if (data[i].name == datas.roles[r].name) {
+                        for (let r in user.roles) {
+                            if (data[i].name == user.roles[r].name) {
                                 hasRole = "checked";
                             }
                         }
