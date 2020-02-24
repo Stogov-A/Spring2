@@ -3,7 +3,6 @@ package ru.javamentor.Server.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.Server.model.Role;
 import ru.javamentor.Server.model.User;

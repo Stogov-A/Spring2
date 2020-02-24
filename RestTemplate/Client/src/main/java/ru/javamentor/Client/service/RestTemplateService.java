@@ -8,8 +8,6 @@ import ru.javamentor.Client.model.User;
 
 @Service
 public class RestTemplateService {
-    @Autowired
-    ObjectMapper objectMapper;
 
     @Autowired
     RestTemplate restTemplate;
