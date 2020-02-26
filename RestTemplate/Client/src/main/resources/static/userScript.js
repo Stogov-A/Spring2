@@ -56,10 +56,8 @@ function openDeleteForm(id) {
 function deleteUser(id) {
     $.ajax({
         type: "DELETE",
-        dataType: "json",
         url: "/deleteUser/" + id,
-        success: function (data) {
-            alert(data);
+        success: function () {
             closeDeleteModal();
         }
     })
