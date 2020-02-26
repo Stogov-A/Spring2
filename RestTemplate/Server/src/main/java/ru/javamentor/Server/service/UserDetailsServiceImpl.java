@@ -1,10 +1,12 @@
 package ru.javamentor.Server.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.javamentor.Server.dao.RoleDao;
 import ru.javamentor.Server.dao.UserDao;
 import ru.javamentor.Server.model.User;
 
@@ -14,6 +16,9 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService,UserService {
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    RoleDao roleDao;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -36,8 +41,14 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
     }
 
     @Override
-    public void addUser(User user) {
+    public int addUser(User user) {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
+                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
+            return 400;
+        }
+        user.setRoles(roleDao.getSomeRolesBySet(user.getRoles()));
         userDao.addUser(user);
+        return 200;
     }
 
     @Override
@@ -46,8 +57,14 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
     }
 
     @Override
-    public void editUser(User user) {
+    public int editUser(User user) {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
+                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
+            return 400;
+        }
+        user.setRoles(roleDao.getSomeRolesBySet(user.getRoles()));
         userDao.editUser(user);
+        return 200;
     }
 
     @Override

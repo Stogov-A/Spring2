@@ -46,24 +46,12 @@ public class RESTController {
     }
 
     @PutMapping(value = "/addUser")
-    public String addUser(@RequestBody User user) throws JsonProcessingException {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
-            return objectMapper.writeValueAsString("User not added! Invalid Arguments");
-        }
-        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
-        userDetailsService.addUser(user);
-        return objectMapper.writeValueAsString("User successfully added");
+    public int addUser(@RequestBody User user) throws JsonProcessingException {
+        return userDetailsService.addUser(user);
     }
 
     @PostMapping(value = "/sendEditForm")
-    public String str(@RequestBody User user) throws JsonProcessingException {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
-            return objectMapper.writeValueAsString("Invalid argument");
-        }
-        user.setRoles(roleService.getSomeRolesByNames(user.getRoles()));
-        userDetailsService.editUser(user);
-        return objectMapper.writeValueAsString("");
+    public int str(@RequestBody User user) throws JsonProcessingException {
+        return userDetailsService.editUser(user);
     }
 }

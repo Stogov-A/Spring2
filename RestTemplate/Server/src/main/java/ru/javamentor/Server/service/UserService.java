@@ -9,11 +9,11 @@ public interface UserService {
 
     public User findUserByID(long id);
 
-    public void addUser(User user);
+    public int addUser(User user);
 
     public void deleteUser(User user);
 
-    public void editUser(User user);
+    public int editUser(User user);
 
     public void deleteUserById(long id);
 }

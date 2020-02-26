@@ -1,7 +1,9 @@
 package ru.javamentor.Client.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.javamentor.Client.model.User;
@@ -29,11 +31,14 @@ public class RestTemplateService {
         restTemplate.delete("http://localhost:8080/deleteUser/" + id);
     }
 
-    public void addUser(User user) {
-        restTemplate.put("http://localhost:8080/addUser", user, String.class);
+    public Integer addUser(User user) {
+        HttpEntity<User> requestUpdate = new HttpEntity<>(user);
+        ResponseEntity<Integer> responseEntity = restTemplate.exchange("http://localhost:8080/addUser",
+                HttpMethod.PUT, requestUpdate, Integer.class);
+        return responseEntity.getBody();
     }
 
-    public void editUser(User user) {
-        restTemplate.postForEntity("http://localhost:8080/sendEditForm", user, String.class);
+    public int editUser(User user) {
+        return restTemplate.postForObject("http://localhost:8080/sendEditForm", user, Integer.class);
     }
 }

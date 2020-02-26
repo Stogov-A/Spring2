@@ -5,11 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.Client.service.RestTemplateService;
-import ru.javamentor.Client.model.Role;
 import ru.javamentor.Client.model.User;
-
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/")
@@ -27,7 +23,7 @@ public class RESTController {
 
     @GetMapping(value = "/getUser/{id}")
     public String getUser(@PathVariable long id) throws JsonProcessingException {
-       return restTemplateService.findUserById(id);
+        return restTemplateService.findUserById(id);
     }
 
     @GetMapping(value = "/getAllRoles")
@@ -42,22 +38,12 @@ public class RESTController {
     }
 
     @PutMapping(value = "/addUser")
-    public String addUser(@RequestBody User user) throws JsonProcessingException {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
-            return objectMapper.writeValueAsString("User not added! Invalid Arguments");
-        }
-        restTemplateService.addUser(user);
-        return objectMapper.writeValueAsString("User successfully added");
+    public int addUser(@RequestBody User user) throws JsonProcessingException {
+        return restTemplateService.addUser(user);
     }
 
     @PostMapping(value = "/sendEditForm")
-    public String str(@RequestBody User user) throws JsonProcessingException {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
-            return objectMapper.writeValueAsString("Invalid argument");
-        }
-        restTemplateService.editUser(user);
-        return objectMapper.writeValueAsString("");
+    public int str(@RequestBody User user) throws JsonProcessingException {
+        return restTemplateService.editUser(user);
     }
 }

@@ -6,22 +6,22 @@ function getUserTable() {
         success: function (data) {
             for (let i in data) {
                 $("#usersTable").append(
-                "<tr>" +
-                "<td>" + data[i].id + "</td>" +
-                "<td>" + data[i].name + "</td>" +
-                "<td>" + data[i].lastName + "</td>" +
-                "<td>" + data[i].age + "</td>" +
-                "<td>" + data[i].email + "</td>" +
-                "<td>" + getUserRoles(data[i].roles) + "</td>" +
+                    "<tr>" +
+                    "<td>" + data[i].id + "</td>" +
+                    "<td>" + data[i].name + "</td>" +
+                    "<td>" + data[i].lastName + "</td>" +
+                    "<td>" + data[i].age + "</td>" +
+                    "<td>" + data[i].email + "</td>" +
+                    "<td>" + getUserRoles(data[i].roles) + "</td>" +
 
-                "<td><button onclick='openEditForm(" + data[i].id + ")'" +
-                " type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\"" +
-                " data-target=\"#editModal\">Edit</button></td>" +
+                    "<td><button onclick='openEditForm(" + data[i].id + ")'" +
+                    " type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\"" +
+                    " data-target=\"#editModal\">Edit</button></td>" +
 
-                "<td><button onclick='openDeleteForm(" + data[i].id + ")' " +
-                "class=\"btn btn-primary\" data-toggle=\"modal\" data-target =\"#deleteModal\">Delete</button></td>" +
-                "</tr>"
-                    )
+                    "<td><button onclick='openDeleteForm(" + data[i].id + ")' " +
+                    "class=\"btn btn-primary\" data-toggle=\"modal\" data-target =\"#deleteModal\">Delete</button></td>" +
+                    "</tr>"
+                )
             }
         }
     });
@@ -43,12 +43,12 @@ function openDeleteForm(id) {
             $("#deleteEmail").val(data.email);
             $("#deleteRoles").val(getUserRoles(data.roles));
             $("#deleteButtons").append(
-            "<button onclick='closeDeleteModal()'" +
-            " type=\"button\" class=\"btn btn-primary\">Cancel</button>" +
+                "<button onclick='closeDeleteModal()'" +
+                " type=\"button\" class=\"btn btn-primary\">Cancel</button>" +
 
-            "<button onclick='deleteUser(" + data.id + ")'" +
-            " type=\"button\" class=\"btn btn-primary\">Delete</button>"
-                )
+                "<button onclick='deleteUser(" + data.id + ")'" +
+                " type=\"button\" class=\"btn btn-primary\">Delete</button>"
+            )
         }
     })
 }
@@ -101,20 +101,20 @@ function openEditForm(id) {
                             }
                         }
                         $("#editRoles").append(
-                        "<label>" + data[i].name + "</label>" +
-                        "<input type='checkbox' id=" + data[i].name + " " + hasRole + " name=" + data[i].name + "  >"
-                        + "<br><br>"
-                            )
+                            "<label>" + data[i].name + "</label>" +
+                            "<input type='checkbox' id=" + data[i].name + " " + hasRole + " name=" + data[i].name + "  >"
+                            + "<br><br>"
+                        )
                     }
                 }
             })
             $("#editButtons").append(
-            "<button onclick='closeEditModal()'" +
-            " type=\"button\" class=\"btn btn-primary\">Close</button>" +
+                "<button onclick='closeEditModal()'" +
+                " type=\"button\" class=\"btn btn-primary\">Close</button>" +
 
-            "<button onclick='sendEditForm()'" +
-            " type=\"button\" class=\"btn btn-primary\">Edit</button>"
-                )
+                "<button onclick='sendEditForm()'" +
+                " type=\"button\" class=\"btn btn-primary\">Edit</button>"
+            )
 
         }
     });
@@ -157,9 +157,9 @@ function sendEditForm() {
         data: myJson,
         contentType: 'application/json',
         success: function (data) {
-            if (data != "") {
-                alert(data);
-            } else {
+            if (data === 400) {
+                alert("Bad Request");
+            } else if (data === 200){
                 closeEditModal();
             }
         },
@@ -191,8 +191,7 @@ function addUser() {
         data: myJson,
         contentType: 'application/json',
         success: function (data) {
-            if (data == "User successfully added") {
-                alert(data);
+            if (data === 200) {
                 $("#addId").val('');
                 $("#addName").val('');
                 $("#addLastName").val('');
@@ -202,10 +201,10 @@ function addUser() {
                 $("#addROLE_USER").prop("checked", false);
                 $("#addROLE_ADMIN").prop("checked", false);
                 showTab();
-            } else {
-                alert(data);
+            }else if (data === 400){
+                alert("Bad Request")
             }
-        },
+        }
     })
 }
 
