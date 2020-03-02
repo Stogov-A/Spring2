@@ -41,4 +41,8 @@ public class RestTemplateService {
     public int editUser(User user) {
         return restTemplate.postForObject("http://localhost:8080/sendEditForm", user, Integer.class);
     }
+
+    public User findUserByName(String name) {
+        return restTemplate.getForObject("http://localhost:8080/getUserByName/" + name, User.class);
+    }
 }

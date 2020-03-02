@@ -54,4 +54,10 @@ public class RESTController {
     public int str(@RequestBody User user) throws JsonProcessingException {
         return userDetailsService.editUser(user);
     }
+
+    @GetMapping("/getUserByName/{name}")
+    public User getUserByName(@PathVariable String name){
+        return userDetailsService.findUserByName(name);
+    }
+
 }

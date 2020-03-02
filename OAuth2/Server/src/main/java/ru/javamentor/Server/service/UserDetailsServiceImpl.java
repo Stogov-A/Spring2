@@ -71,4 +71,9 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
     public void deleteUserById(long id) {
         userDao.deleteUser(findUserByID(id));
     }
+
+    @Override
+    public User findUserByName(String name) {
+        return userDao.findUserByName(name);
+    }
 }
