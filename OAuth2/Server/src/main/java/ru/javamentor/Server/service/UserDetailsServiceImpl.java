@@ -42,8 +42,8 @@ public class UserDetailsServiceImpl implements UserDetailsService,UserService {
 
     @Override
     public int addUser(User user) {
-        if (user.getName().isEmpty() || user.getLastName().isEmpty() || user.getAge() < 0 || user.getEmail().isEmpty()
-                || user.getPassword().isEmpty() || user.getRoles().size() == 0) {
+        if (user.getName().isEmpty() || user.getLastName().isEmpty() ||  user.getEmail().isEmpty()
+                || user.getRoles().size() == 0) {
             return 400;
         }
         user.setRoles(roleDao.getSomeRolesBySet(user.getRoles()));

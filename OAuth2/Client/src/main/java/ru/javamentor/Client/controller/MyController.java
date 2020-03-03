@@ -26,28 +26,28 @@ public class MyController {
     @Autowired
     RestTemplateService restTemplateService;
 
-    private OAuth2User getCurrentUser() {
+    private User getUserFromPrincipal() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getName()+"!!!!!!!!!!!!!!");
-        System.out.println(auth.getPrincipal().toString()+"!!!!!!!!!!!!!");
-        return ((OAuth2AuthenticationToken) auth).getPrincipal();
-    }
-
-    private User getUserFromPrincipal(OAuth2User principal) {
-        System.out.println(principal.getName());
-        System.out.println(principal.getAttributes());
-        User user = restTemplateService.findUserByName((String) principal.getAttributes().get("given_name"));
-        if (user == null){
-            user = new User();
-            user.setName((String) principal.getAttributes().get("given_name"));
-            user.setLastName((String) principal.getAttributes().get("family_name"));
-            user.setEmail((String) principal.getAttributes().get("email"));
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Set<Role> roles = new HashSet<>();
-            for (GrantedAuthority authority : auth.getAuthorities()) {
-                if (authority.getAuthority().contains("ROLE")) {
-                    roles.add(new Role(authority.getAuthority()));
+        User user;
+        //смотрим откуда получили юзера, из гугла или бд
+        if (auth.getCredentials() == null) {
+            user = restTemplateService.findUserByName(auth.getName());
+        }else {
+            OAuth2User principal = ((OAuth2AuthenticationToken) auth).getPrincipal();
+            user = restTemplateService.findUserByName((String) principal.getAttributes().get("given_name"));
+            if (user == null) {
+                user = new User();
+                user.setName((String) principal.getAttributes().get("given_name"));
+                user.setLastName((String) principal.getAttributes().get("family_name"));
+                user.setEmail((String) principal.getAttributes().get("email"));
+                Set<Role> roles = new HashSet<>();
+                for (GrantedAuthority authority : auth.getAuthorities()) {
+                    if (authority.getAuthority().contains("ROLE")) {
+                        roles.add(new Role(authority.getAuthority()));
+                    }
                 }
+                user.setRoles(roles);
+                restTemplateService.addUser(user);
             }
         }
         return user;
@@ -55,25 +55,14 @@ public class MyController {
 
     @GetMapping(value = "/hello")
     public String usersGet(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-//        System.out.println(auth.getName());
-//        System.out.println(auth.getCredentials());
-//        System.out.println(auth.getDetails());
-//        System.out.println(auth.getPrincipal());
-        User user = getUserFromPrincipal(getCurrentUser());
+        User user = getUserFromPrincipal();
         model.addAttribute("user", user);
         return "hello";
     }
 
     @GetMapping(value = "/admin")
     public String adminGet(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getName());
-        System.out.println(auth.getCredentials());
-        System.out.println(auth.getDetails());
-        System.out.println(auth.getPrincipal());
-        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails user = getUserFromPrincipal();
         boolean isAdmin = false;
         boolean isUser = false;
         for (GrantedAuthority authority : user.getAuthorities()) {
