@@ -13,22 +13,12 @@ import ru.javamentor.Server.model.User;
 import java.util.List;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService,UserService {
+public class UserDetailsServiceImpl implements UserService {
     @Autowired
     UserDao userDao;
 
     @Autowired
     RoleDao roleDao;
-
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        UserDetails userDetails = userDao.findUserByName(s);
-        if (userDetails == null){
-            throw new UsernameNotFoundException("Fuck");
-        }
-        return userDetails;
-    }
-
 
     @Override
     public List<User> findAllUsers() {

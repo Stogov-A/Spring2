@@ -4,12 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.javamentor.Client.model.User;
 
 @Service
-public class RestTemplateService {
+public class RestTemplateService implements UserDetailsService {
 
     @Autowired
     RestTemplate restTemplate;
@@ -44,5 +47,11 @@ public class RestTemplateService {
 
     public User findUserByName(String name) {
         return restTemplate.getForObject("http://localhost:8080/getUserByName/" + name, User.class);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        User userDetails = restTemplate.getForObject("http://localhost:8080/getUserByName/" + s, User.class);
+        return userDetails;
     }
 }

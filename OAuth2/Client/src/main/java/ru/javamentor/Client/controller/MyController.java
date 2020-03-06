@@ -23,6 +23,7 @@ import java.util.Set;
 @Controller
 @RequestMapping(value = "/")
 public class MyController {
+
     @Autowired
     RestTemplateService restTemplateService;
 
@@ -30,9 +31,9 @@ public class MyController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user;
         //смотрим откуда получили юзера, из гугла или бд
-        if (auth.getCredentials() == null) {
+        if (auth.getCredentials() == null || auth.getName().equals("андрей")) {
             user = restTemplateService.findUserByName(auth.getName());
-        }else {
+        } else {
             OAuth2User principal = ((OAuth2AuthenticationToken) auth).getPrincipal();
             user = restTemplateService.findUserByName((String) principal.getAttributes().get("given_name"));
             if (user == null) {

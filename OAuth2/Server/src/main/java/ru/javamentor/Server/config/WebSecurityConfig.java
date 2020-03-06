@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("a").password("a").roles("ADMIN");
@@ -22,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin","/getAllRoles").hasAnyRole("ADMIN")
+                .antMatchers("/admin", "/getAllRoles").hasAnyRole("ADMIN")
                 .and()
                 .httpBasic();
     }

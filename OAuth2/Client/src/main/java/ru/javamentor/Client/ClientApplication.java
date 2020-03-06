@@ -11,8 +11,7 @@ public class ClientApplication {
 
 	@Bean
 	RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
-		return restTemplateBuilder.basicAuthentication("a", "a").build();
-	}
+		return restTemplateBuilder.basicAuthentication("a", "a").build();	}
 	public static void main(String[] args) {
 		SpringApplication.run(ClientApplication.class, args);
 	}

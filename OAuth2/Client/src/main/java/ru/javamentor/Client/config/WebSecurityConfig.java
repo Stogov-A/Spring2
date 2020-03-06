@@ -1,5 +1,6 @@
 package ru.javamentor.Client.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import ru.javamentor.Client.config.handler.LoginSuccessHandler;
 import ru.javamentor.Client.model.User;
+import ru.javamentor.Client.service.RestTemplateService;
 
 import java.util.Map;
 
@@ -19,9 +21,18 @@ import java.util.Map;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //    @Override
+//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("a").password("a").roles("ADMIN");
+//    }
+    @Autowired
+    RestTemplateService restTemplateService;
+
+    @Autowired
+    LoginSuccessHandler loginSuccessHandler;
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("a").password("a").roles("ADMIN");
+        auth.userDetailsService(restTemplateService);
     }
 
     @Override
@@ -33,10 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/hello").hasAnyRole("USER")
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login().successHandler(new LoginSuccessHandler())
+                .formLogin().successHandler(loginSuccessHandler)
                 .and()
-                .formLogin()
-                .successHandler(new LoginSuccessHandler())
+                .oauth2Login().successHandler(loginSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()
